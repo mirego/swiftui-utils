@@ -1,6 +1,7 @@
 import SwiftUI
 
-private struct OverScrollScaleModifier: ViewModifier {
+private struct HeaderParallaxScaleModifier: ViewModifier {
+    let parallaxFactor: CGFloat?
     let outterCoordinateName: String
 
     @State private var contentHeight: CGFloat = 0
@@ -10,6 +11,9 @@ private struct OverScrollScaleModifier: ViewModifier {
         content
             .readLocalFrame {
                 contentHeight = $0.height
+            }
+            .ifLet(parallaxFactor) { content, value in
+                content.offset(y: -min(0, minY * value))
             }
             .scaleEffect(scaleFactor, anchor: .bottom)
             .readNamedFrame(coordinateName: outterCoordinateName) { frame in
@@ -27,7 +31,7 @@ private struct OverScrollScaleModifier: ViewModifier {
 }
 
 public extension View {
-    func overScrollScale(outterCoordinateName: String) -> some View {
-        modifier(OverScrollScaleModifier(outterCoordinateName: outterCoordinateName))
+    func headerParallaxScale(parallaxFactor: CGFloat? = 1 / 3, outterCoordinateName: String) -> some View {
+        modifier(HeaderParallaxScaleModifier(parallaxFactor: parallaxFactor, outterCoordinateName: outterCoordinateName))
     }
 }

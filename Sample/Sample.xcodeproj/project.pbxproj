@@ -13,7 +13,7 @@
 		E1316F7E2AFEA23700232575 /* ScaleOnScrollModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F752AFEA23700232575 /* ScaleOnScrollModifier.swift */; };
 		E1316F7F2AFEA23700232575 /* PinTopModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F762AFEA23700232575 /* PinTopModifier.swift */; };
 		E1316F802AFEA23700232575 /* FadeOutOnScrollModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F772AFEA23700232575 /* FadeOutOnScrollModifier.swift */; };
-		E1316F812AFEA23700232575 /* OverScrollScaleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F782AFEA23700232575 /* OverScrollScaleModifier.swift */; };
+		E1316F812AFEA23700232575 /* HeaderParallaxScaleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F782AFEA23700232575 /* HeaderParallaxScaleModifier.swift */; };
 		E1316F822AFEA23700232575 /* FrameGetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F792AFEA23700232575 /* FrameGetters.swift */; };
 		E1316F832AFEA23700232575 /* TappableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F7A2AFEA23700232575 /* TappableModifier.swift */; };
 		E1316F842AFEA23700232575 /* FirstAppearModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F7B2AFEA23700232575 /* FirstAppearModifier.swift */; };
@@ -28,7 +28,7 @@
 		E1A52D392B026BEF008A2B9A /* PinTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D382B026BEF008A2B9A /* PinTopView.swift */; };
 		E1A52D3C2B027EDA008A2B9A /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D3B2B027EDA008A2B9A /* ViewExtensions.swift */; };
 		E1A52D3E2B02AADD008A2B9A /* ScaleOnScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D3D2B02AADD008A2B9A /* ScaleOnScrollView.swift */; };
-		E1A52D402B02B04F008A2B9A /* OverScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D3F2B02B04F008A2B9A /* OverScrollView.swift */; };
+		E1A52D402B02B04F008A2B9A /* HeaderParallaxScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */; };
 		E1A52D422B02BC16008A2B9A /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D412B02BC16008A2B9A /* ColorExtensions.swift */; };
 		E1A52D442B02BC5B008A2B9A /* UIApplicationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D432B02BC5B008A2B9A /* UIApplicationExtensions.swift */; };
 /* End PBXBuildFile section */
@@ -41,7 +41,7 @@
 		E1316F752AFEA23700232575 /* ScaleOnScrollModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScaleOnScrollModifier.swift; sourceTree = "<group>"; };
 		E1316F762AFEA23700232575 /* PinTopModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinTopModifier.swift; sourceTree = "<group>"; };
 		E1316F772AFEA23700232575 /* FadeOutOnScrollModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeOutOnScrollModifier.swift; sourceTree = "<group>"; };
-		E1316F782AFEA23700232575 /* OverScrollScaleModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverScrollScaleModifier.swift; sourceTree = "<group>"; };
+		E1316F782AFEA23700232575 /* HeaderParallaxScaleModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderParallaxScaleModifier.swift; sourceTree = "<group>"; };
 		E1316F792AFEA23700232575 /* FrameGetters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameGetters.swift; sourceTree = "<group>"; };
 		E1316F7A2AFEA23700232575 /* TappableModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TappableModifier.swift; sourceTree = "<group>"; };
 		E1316F7B2AFEA23700232575 /* FirstAppearModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstAppearModifier.swift; sourceTree = "<group>"; };
@@ -56,7 +56,7 @@
 		E1A52D382B026BEF008A2B9A /* PinTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinTopView.swift; sourceTree = "<group>"; };
 		E1A52D3B2B027EDA008A2B9A /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		E1A52D3D2B02AADD008A2B9A /* ScaleOnScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleOnScrollView.swift; sourceTree = "<group>"; };
-		E1A52D3F2B02B04F008A2B9A /* OverScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverScrollView.swift; sourceTree = "<group>"; };
+		E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderParallaxScaleView.swift; sourceTree = "<group>"; };
 		E1A52D412B02BC16008A2B9A /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		E1A52D432B02BC5B008A2B9A /* UIApplicationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,7 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				E1316F772AFEA23700232575 /* FadeOutOnScrollModifier.swift */,
-				E1316F782AFEA23700232575 /* OverScrollScaleModifier.swift */,
+				E1316F782AFEA23700232575 /* HeaderParallaxScaleModifier.swift */,
 				E1316F762AFEA23700232575 /* PinTopModifier.swift */,
 				E1316F752AFEA23700232575 /* ScaleOnScrollModifier.swift */,
 			);
@@ -157,7 +157,7 @@
 		E1316F8B2AFEA32100232575 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				E1A52D3F2B02B04F008A2B9A /* OverScrollView.swift */,
+				E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */,
 				E1A52D382B026BEF008A2B9A /* PinTopView.swift */,
 				E1A52D3D2B02AADD008A2B9A /* ScaleOnScrollView.swift */,
 			);
@@ -295,11 +295,11 @@
 				E1316F862AFEA23700232575 /* BorderModifier.swift in Sources */,
 				E1316F492AFE839000232575 /* RootView.swift in Sources */,
 				E1316F982AFEBA1600232575 /* RoundedCorner.swift in Sources */,
-				E1316F812AFEA23700232575 /* OverScrollScaleModifier.swift in Sources */,
+				E1316F812AFEA23700232575 /* HeaderParallaxScaleModifier.swift in Sources */,
 				E1A52D422B02BC16008A2B9A /* ColorExtensions.swift in Sources */,
 				E1A52D442B02BC5B008A2B9A /* UIApplicationExtensions.swift in Sources */,
 				E1316F842AFEA23700232575 /* FirstAppearModifier.swift in Sources */,
-				E1A52D402B02B04F008A2B9A /* OverScrollView.swift in Sources */,
+				E1A52D402B02B04F008A2B9A /* HeaderParallaxScaleView.swift in Sources */,
 				E1316F472AFE839000232575 /* SampleApp.swift in Sources */,
 				E1316F832AFEA23700232575 /* TappableModifier.swift in Sources */,
 				E1A52D372B026513008A2B9A /* OverlayButtonStyle.swift in Sources */,

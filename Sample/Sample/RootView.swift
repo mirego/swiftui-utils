@@ -4,7 +4,7 @@ struct RootView: View {
     enum Navigation {
         case scrollToTop
         case scaleOnScroll
-        case overScrollScale
+        case headerParallaxScale
     }
 
     @State var navigation: Navigation?
@@ -26,9 +26,9 @@ struct RootView: View {
                         navigation = .scaleOnScroll
                     }
 
-                Text("Over Scroll Scale")
+                Text("Header Parallax Scale")
                     .tappable {
-                        navigation = .overScrollScale
+                        navigation = .headerParallaxScale
                     }
             }
             .padding(16)
@@ -40,8 +40,8 @@ struct RootView: View {
         .sheet(isPresented: $navigation.isActive(.scaleOnScroll)) {
             ScaleOnScrollView()
         }
-        .fullScreenCover(isPresented: $navigation.isActive(.overScrollScale)) {
-            OverScrollView()
+        .fullScreenCover(isPresented: $navigation.isActive(.headerParallaxScale)) {
+            HeaderParallaxScaleView()
         }
     }
 }
