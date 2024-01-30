@@ -1,10 +1,10 @@
 import SwiftUI
 
 public extension View {
-    func readSize(_ frame: Binding<CGSize>) -> some View {
+    func readSize(_ size: Binding<CGSize>) -> some View {
         background(FrameGetter(coordinateSpace: .local))
             .onPreferenceChange(FramePreferenceKey.self) {
-                frame.wrappedValue = $0.size
+                size.wrappedValue = $0.size
             }
     }
 
