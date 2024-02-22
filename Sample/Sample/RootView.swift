@@ -5,6 +5,7 @@ struct RootView: View {
         case scrollToTop
         case scaleOnScroll
         case headerParallaxScale
+        case scrollThreshold
     }
 
     @State var navigation: Navigation?
@@ -30,6 +31,11 @@ struct RootView: View {
                     .tappable {
                         navigation = .headerParallaxScale
                     }
+
+                Text("Scroll Threshold")
+                    .tappable {
+                        navigation = .scrollThreshold
+                    }
             }
             .padding(16)
         }
@@ -39,6 +45,9 @@ struct RootView: View {
         }
         .sheet(isPresented: $navigation.isActive(.scaleOnScroll)) {
             ScaleOnScrollView()
+        }
+        .sheet(isPresented: $navigation.isActive(.scrollThreshold)) {
+            ScrollThresholdView()
         }
         .fullScreenCover(isPresented: $navigation.isActive(.headerParallaxScale)) {
             HeaderParallaxScaleView()

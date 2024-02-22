@@ -22,6 +22,9 @@
 		E1316F922AFEAEB000232575 /* Backport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F912AFEAEB000232575 /* Backport.swift */; };
 		E1316F942AFEB30C00232575 /* ScrollViewBackport.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F932AFEB30C00232575 /* ScrollViewBackport.swift */; };
 		E1316F982AFEBA1600232575 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F962AFEBA1600232575 /* RoundedCorner.swift */; };
+		E1A502EE2B8780160014EA1B /* ScrollThresholdModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A502ED2B8780160014EA1B /* ScrollThresholdModifier.swift */; };
+		E1A502F02B8782C10014EA1B /* ScrollThresholdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A502EF2B8782C10014EA1B /* ScrollThresholdView.swift */; };
+		E1A502F22B8784A20014EA1B /* ScrollPercentageModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A502F12B8784A20014EA1B /* ScrollPercentageModifier.swift */; };
 		E1A52D302B0264DE008A2B9A /* ExtendedTapAreaTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D2F2B0264DE008A2B9A /* ExtendedTapAreaTextFieldStyle.swift */; };
 		E1A52D362B026513008A2B9A /* OpacityButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D332B026513008A2B9A /* OpacityButtonStyle.swift */; };
 		E1A52D372B026513008A2B9A /* OverlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A52D342B026513008A2B9A /* OverlayButtonStyle.swift */; };
@@ -50,6 +53,9 @@
 		E1316F912AFEAEB000232575 /* Backport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backport.swift; sourceTree = "<group>"; };
 		E1316F932AFEB30C00232575 /* ScrollViewBackport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewBackport.swift; sourceTree = "<group>"; };
 		E1316F962AFEBA1600232575 /* RoundedCorner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
+		E1A502ED2B8780160014EA1B /* ScrollThresholdModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollThresholdModifier.swift; sourceTree = "<group>"; };
+		E1A502EF2B8782C10014EA1B /* ScrollThresholdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollThresholdView.swift; sourceTree = "<group>"; };
+		E1A502F12B8784A20014EA1B /* ScrollPercentageModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollPercentageModifier.swift; sourceTree = "<group>"; };
 		E1A52D2F2B0264DE008A2B9A /* ExtendedTapAreaTextFieldStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTapAreaTextFieldStyle.swift; sourceTree = "<group>"; };
 		E1A52D332B026513008A2B9A /* OpacityButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpacityButtonStyle.swift; sourceTree = "<group>"; };
 		E1A52D342B026513008A2B9A /* OverlayButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayButtonStyle.swift; sourceTree = "<group>"; };
@@ -134,6 +140,8 @@
 				E1316F782AFEA23700232575 /* HeaderParallaxScaleModifier.swift */,
 				E1316F762AFEA23700232575 /* PinTopModifier.swift */,
 				E1316F752AFEA23700232575 /* ScaleOnScrollModifier.swift */,
+				E1A502F12B8784A20014EA1B /* ScrollPercentageModifier.swift */,
+				E1A502ED2B8780160014EA1B /* ScrollThresholdModifier.swift */,
 			);
 			path = Scroll;
 			sourceTree = "<group>";
@@ -160,6 +168,7 @@
 				E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */,
 				E1A52D382B026BEF008A2B9A /* PinTopView.swift */,
 				E1A52D3D2B02AADD008A2B9A /* ScaleOnScrollView.swift */,
+				E1A502EF2B8782C10014EA1B /* ScrollThresholdView.swift */,
 			);
 			path = Examples;
 			sourceTree = "<group>";
@@ -292,10 +301,12 @@
 				E1A52D362B026513008A2B9A /* OpacityButtonStyle.swift in Sources */,
 				E1A52D302B0264DE008A2B9A /* ExtendedTapAreaTextFieldStyle.swift in Sources */,
 				E1316F7E2AFEA23700232575 /* ScaleOnScrollModifier.swift in Sources */,
+				E1A502F22B8784A20014EA1B /* ScrollPercentageModifier.swift in Sources */,
 				E1316F862AFEA23700232575 /* BorderModifier.swift in Sources */,
 				E1316F492AFE839000232575 /* RootView.swift in Sources */,
 				E1316F982AFEBA1600232575 /* RoundedCorner.swift in Sources */,
 				E1316F812AFEA23700232575 /* HeaderParallaxScaleModifier.swift in Sources */,
+				E1A502EE2B8780160014EA1B /* ScrollThresholdModifier.swift in Sources */,
 				E1A52D422B02BC16008A2B9A /* ColorExtensions.swift in Sources */,
 				E1A52D442B02BC5B008A2B9A /* UIApplicationExtensions.swift in Sources */,
 				E1316F842AFEA23700232575 /* FirstAppearModifier.swift in Sources */,
@@ -306,6 +317,7 @@
 				E1A52D3E2B02AADD008A2B9A /* ScaleOnScrollView.swift in Sources */,
 				E1316F822AFEA23700232575 /* FrameGetters.swift in Sources */,
 				E1316F892AFEA25D00232575 /* EnumCaseBinding.swift in Sources */,
+				E1A502F02B8782C10014EA1B /* ScrollThresholdView.swift in Sources */,
 				E1316F802AFEA23700232575 /* FadeOutOnScrollModifier.swift in Sources */,
 				E1316F922AFEAEB000232575 /* Backport.swift in Sources */,
 			);
