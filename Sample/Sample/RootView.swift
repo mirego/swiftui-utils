@@ -6,9 +6,24 @@ struct RootView: View {
         case scaleOnScroll
         case headerParallaxScale
         case scrollThreshold
+        case onVisible
     }
 
+    private struct Section {
+        let title: String
+        let navigation: Navigation
+    }
+
+    private let sections = [
+        Section(title: "Scroll To Top", navigation: .scrollToTop),
+        Section(title: "Scale On Scroll", navigation: .scaleOnScroll),
+        Section(title: "Header Parallax Scale", navigation: .headerParallaxScale),
+        Section(title: "Scroll Threshold", navigation: .scrollThreshold),
+        Section(title: "On Visible", navigation: .onVisible)
+    ]
+
     @State var navigation: Navigation?
+
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -17,25 +32,12 @@ struct RootView: View {
                     .font(.system(size: 30, weight: .bold))
                     .padding(.bottom, 16)
 
-                Text("Scroll To Top")
-                    .tappable {
-                        navigation = .scrollToTop
-                    }
-
-                Text("Scale On Scroll")
-                    .tappable {
-                        navigation = .scaleOnScroll
-                    }
-
-                Text("Header Parallax Scale")
-                    .tappable {
-                        navigation = .headerParallaxScale
-                    }
-
-                Text("Scroll Threshold")
-                    .tappable {
-                        navigation = .scrollThreshold
-                    }
+                ForEach(sections.indices, id: \.self) { index in
+                    Text(sections[index].title)
+                        .tappable {
+                            navigation = sections[index].navigation
+                        }
+                }
             }
             .padding(16)
         }
@@ -51,6 +53,9 @@ struct RootView: View {
         }
         .fullScreenCover(isPresented: $navigation.isActive(.headerParallaxScale)) {
             HeaderParallaxScaleView()
+        }
+        .sheet(isPresented: $navigation.isActive(.onVisible)) {
+            OnVisibleView()
         }
     }
 }
