@@ -92,4 +92,10 @@ public struct ScrollViewContextData {
     let frame: Binding<CGRect>
     let safeAreaInsets: EdgeInsets
     let coordinateSpaceName: String
+
+    public init(frame: Binding<CGRect>, safeAreaInsets: EdgeInsets, coordinateSpaceName: String) {
+        self.frame = frame
+        self.safeAreaInsets = safeAreaInsets
+        self.coordinateSpaceName = coordinateSpaceName
+    }
 }
