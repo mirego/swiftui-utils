@@ -10,12 +10,7 @@ struct OnVisibleView: View {
             ScrollView {
                 VStack {
                     ForEach(1..<20, id: \.self) { number in
-                        ItemView(
-                            number: number,
-                            scrollViewFrame: $scrollViewFrame,
-                            parentSafeAreaInsets: proxy.safeAreaInsets,
-                            coordinateName: scrollViewCoordinateName
-                        )
+                        ItemView(number: number)
                     }
                 }
                 .padding()
@@ -24,15 +19,20 @@ struct OnVisibleView: View {
             .readLocalFrame {
                 scrollViewFrame = $0
             }
+            .environment(
+                \.scrollViewContextData,
+                 ScrollViewContextData(
+                    frame: $scrollViewFrame,
+                    safeAreaInsets: proxy.safeAreaInsets,
+                    coordinateSpaceName: scrollViewCoordinateName
+                 )
+            )
         }
     }
 }
 
 struct ItemView: View {
     let number: Int
-    @Binding var scrollViewFrame: CGRect
-    let parentSafeAreaInsets: EdgeInsets
-    let coordinateName: String
 
     @State private var isVisible = false
 
@@ -45,23 +45,14 @@ struct ItemView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.red)
             )
-            .onVisible(
-                parentFrame: $scrollViewFrame,
-                parentSafeAreaInsets: parentSafeAreaInsets,
-                coordinateName: coordinateName
-            ) { isVisible in
+            .onVisible() { isVisible in
                 if isVisible {
                     print("On visible \(number)")
                 } else {
                     print("On not visible \(number)")
                 }
             }
-            .onVisible(
-                parentFrame: $scrollViewFrame,
-                parentSafeAreaInsets: parentSafeAreaInsets,
-                coordinateName: coordinateName,
-                onVisible: $isVisible
-            )
+            .onVisible(onVisible: $isVisible)
             .onChange(of: isVisible) { isVisible in
                 if isVisible {
                     print("\(number) visible at \(Date())")

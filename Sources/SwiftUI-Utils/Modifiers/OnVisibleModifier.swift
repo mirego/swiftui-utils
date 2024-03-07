@@ -1,29 +1,42 @@
 import SwiftUI
 
 private struct OnVisibleModifier: ViewModifier {
-    @Binding var parentFrame: CGRect
-    let parentSafeAreaInsets: EdgeInsets
-    let coordinateName: String
     @Binding var onVisible: Bool
     let callback: (Bool) -> Void
+
+    @Environment(\.scrollViewContextData) var scrollViewContextData
 
     @State private var viewFrame = CGRect()
     @State private var isVisible = false
 
     func body(content: Content) -> some View {
         content
-            .readNamedFrame(coordinateName: coordinateName) { viewFrame in
-                self.viewFrame = viewFrame
-                updateVisiblity()
+            .ifLet(scrollViewContextData) { view, scrollViewContextData in
+                view.readNamedFrame(coordinateName: scrollViewContextData.coordinateSpaceName) { viewFrame in
+                    self.viewFrame = viewFrame
+                    updateVisiblity()
+                }
             }
     }
 
     private var effectiveInFrame: CGRect {
-        CGRect(x: parentFrame.minX, y: parentFrame.minY, width: parentFrame.width, height: parentFrame.height + parentSafeAreaInsets.top + parentSafeAreaInsets.bottom)
+        guard let scrollViewContextData else { return .zero }
+        return CGRect(
+            x: scrollViewContextData.frame.wrappedValue.minX,
+            y: scrollViewContextData.frame.wrappedValue.minY,
+            width: scrollViewContextData.frame.wrappedValue.width,
+            height: scrollViewContextData.frame.wrappedValue.height + scrollViewContextData.safeAreaInsets.top + scrollViewContextData.safeAreaInsets.bottom
+        )
     }
 
     private var effectiveLocalFrame: CGRect {
-        CGRect(x: viewFrame.minX, y: viewFrame.minY + parentSafeAreaInsets.top, width: viewFrame.width, height: viewFrame.height)
+        guard let scrollViewContextData else { return .zero }
+        return CGRect(
+            x: viewFrame.minX,
+            y: viewFrame.minY + scrollViewContextData.safeAreaInsets.top,
+            width: viewFrame.width,
+            height: viewFrame.height
+        )
     }
 
     private func updateVisiblity() {
@@ -42,16 +55,10 @@ private struct OnVisibleModifier: ViewModifier {
 
 public extension View {
     func onVisible(
-        parentFrame: Binding<CGRect>,
-        parentSafeAreaInsets: EdgeInsets,
-        coordinateName: String,
         callback: @escaping  (Bool) -> Void
     ) -> some View {
         modifier(
             OnVisibleModifier(
-                parentFrame: parentFrame,
-                parentSafeAreaInsets: parentSafeAreaInsets,
-                coordinateName: coordinateName,
                 onVisible: .constant(false),
                 callback: callback
             )
@@ -59,19 +66,30 @@ public extension View {
     }
 
     func onVisible(
-        parentFrame: Binding<CGRect>,
-        parentSafeAreaInsets: EdgeInsets,
-        coordinateName: String,
         onVisible: Binding<Bool>
     ) -> some View {
         modifier(
             OnVisibleModifier(
-                parentFrame: parentFrame,
-                parentSafeAreaInsets: parentSafeAreaInsets,
-                coordinateName: coordinateName,
                 onVisible: onVisible,
                 callback: { _ in }
             )
         )
     }
+}
+
+struct ScrollViewContextDataKey: EnvironmentKey {
+    static let defaultValue: ScrollViewContextData? = nil
+}
+
+public extension EnvironmentValues {
+    var scrollViewContextData: ScrollViewContextData? {
+        get { self[ScrollViewContextDataKey.self] }
+        set { self[ScrollViewContextDataKey.self] = newValue }
+    }
+}
+
+public struct ScrollViewContextData {
+    let frame: Binding<CGRect>
+    let safeAreaInsets: EdgeInsets
+    let coordinateSpaceName: String
 }
