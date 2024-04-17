@@ -8,6 +8,7 @@ public struct OverlayButtonStyle<S>: ButtonStyle where S: Shape {
 
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
+            .contentShape(backgroundShape)
             .overlay {
                 backgroundShape.fill(
                     color.opacity((isPressedStateEnable && configuration.isPressed) ? 1 : 0)

@@ -40,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "SwiftUI-Utils.podspec"; path = "../../SwiftUI-Utils.podspec"; sourceTree = "<group>"; };
 		E1316F432AFE839000232575 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1316F462AFE839000232575 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
 		E1316F482AFE839000232575 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 		E1316F722AFEA23700232575 /* SwiftUI-Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */,
 				E1316F902AFEAE9F00232575 /* Backport */,
 				E1A52D312B0264EC008A2B9A /* ButtonStyles */,
 				E1A52D3A2B027EB7008A2B9A /* Extensions */,

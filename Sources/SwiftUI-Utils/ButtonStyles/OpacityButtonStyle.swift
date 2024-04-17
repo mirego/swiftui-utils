@@ -7,6 +7,7 @@ public struct OpacityButtonStyle: ButtonStyle {
 
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
+            .contentShape(Rectangle())
             .opacity((configuration.isPressed && isPressedStateEnable) ? opacity : 1)
             .onChange(of: configuration.isPressed) { newValue in
                 isPressed.wrappedValue = newValue
