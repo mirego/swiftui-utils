@@ -6,15 +6,13 @@ private struct OnVisibleModifier: ViewModifier {
 
     @Environment(\.scrollViewContextData) var scrollViewContextData
 
-    @State private var viewFrame = CGRect()
     @State private var isVisible = false
 
     func body(content: Content) -> some View {
         content
             .ifLet(scrollViewContextData) { view, scrollViewContextData in
                 view.readNamedFrame(coordinateName: scrollViewContextData.coordinateSpaceName) { viewFrame in
-                    self.viewFrame = viewFrame
-                    updateVisiblity()
+                    updateVisiblity(viewFrame: viewFrame)
                 }
             }
     }
@@ -29,7 +27,7 @@ private struct OnVisibleModifier: ViewModifier {
         )
     }
 
-    private var effectiveLocalFrame: CGRect {
+    private func effectiveLocalFrame(viewFrame: CGRect) -> CGRect {
         guard let scrollViewContextData else { return .zero }
         return CGRect(
             x: viewFrame.minX,
@@ -39,8 +37,8 @@ private struct OnVisibleModifier: ViewModifier {
         )
     }
 
-    private func updateVisiblity() {
-        let newIsVisible = effectiveInFrame.intersects(effectiveLocalFrame)
+    private func updateVisiblity(viewFrame: CGRect) {
+        let newIsVisible = effectiveInFrame.intersects(effectiveLocalFrame(viewFrame: viewFrame))
         if !isVisible && newIsVisible {
             callback(true)
             onVisible = true
