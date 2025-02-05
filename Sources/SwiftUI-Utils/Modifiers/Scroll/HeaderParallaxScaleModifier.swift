@@ -2,6 +2,7 @@ import SwiftUI
 
 private struct HeaderParallaxScaleModifier: ViewModifier {
     let parallaxFactor: CGFloat?
+    let anchor: UnitPoint
     let outterCoordinateName: String
 
     @State private var contentHeight: CGFloat = 0
@@ -15,7 +16,7 @@ private struct HeaderParallaxScaleModifier: ViewModifier {
             .ifLet(parallaxFactor) { content, value in
                 content.offset(y: -min(0, minY * value))
             }
-            .scaleEffect(scaleFactor, anchor: .bottom)
+            .scaleEffect(scaleFactor, anchor: anchor)
             .readNamedFrame(coordinateName: outterCoordinateName) { frame in
                 minY = frame.minY
             }
@@ -31,7 +32,7 @@ private struct HeaderParallaxScaleModifier: ViewModifier {
 }
 
 public extension View {
-    func headerParallaxScale(parallaxFactor: CGFloat? = 1 / 3, outterCoordinateName: String) -> some View {
-        modifier(HeaderParallaxScaleModifier(parallaxFactor: parallaxFactor, outterCoordinateName: outterCoordinateName))
+    func headerParallaxScale(parallaxFactor: CGFloat? = 1 / 3, anchor: UnitPoint = .bottom, outterCoordinateName: String) -> some View {
+        modifier(HeaderParallaxScaleModifier(parallaxFactor: parallaxFactor, anchor: anchor, outterCoordinateName: outterCoordinateName))
     }
 }
