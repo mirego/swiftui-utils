@@ -5,11 +5,11 @@ public struct HTMLFont {
     let name: String?
     let size: CGFloat
 
-    static let system = HTMLFont(name: nil, size: 16)
-    static func system(size: CGFloat) -> Self {
+    public static let system = HTMLFont(name: nil, size: 16)
+    public static func system(size: CGFloat) -> Self {
         HTMLFont(name: nil, size: size)
     }
-    static func named(_ name: String, size: CGFloat) -> Self {
+    public static func named(_ name: String, size: CGFloat) -> Self {
         HTMLFont(name: name, size: size)
     }
 }
