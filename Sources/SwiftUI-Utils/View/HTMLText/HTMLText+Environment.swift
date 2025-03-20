@@ -6,6 +6,7 @@ extension EnvironmentValues {
     @Entry var htmlKerning: CGFloat = 0
     @Entry var htmlFont: HTMLFont = .system
     @Entry var htmlLineSpacing: CGFloat?
+    @Entry var htmlLineBreakMode: NSLineBreakMode = .byTruncatingTail
 }
 
 extension View {
@@ -28,5 +29,9 @@ extension View {
 
     public func htmlLineSpacing(_ spacing: CGFloat?) -> some View {
         environment(\.htmlLineSpacing, spacing)
+    }
+
+    public func htmlLineBreakMode(_ mode: NSLineBreakMode) -> some View {
+        environment(\.htmlLineBreakMode, mode)
     }
 }

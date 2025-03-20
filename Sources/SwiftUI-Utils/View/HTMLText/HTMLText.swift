@@ -23,6 +23,7 @@ public struct HTMLText: UIViewRepresentable {
     @Environment(\.htmlKerning) var kerning
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
+    @Environment(\.htmlLineBreakMode) var lineBreakMode
 
     let html: String
 
@@ -38,7 +39,7 @@ public struct HTMLText: UIViewRepresentable {
         view.backgroundColor = .clear
         view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.textContainer.lineFragmentPadding = .zero
-        view.textContainer.lineBreakMode = .byTruncatingTail
+        view.textContainer.lineBreakMode = lineBreakMode
         view.textContainer.maximumNumberOfLines = lineLimit ?? 0
         view.textContainerInset = .zero
         view.accessibilityTraits = .staticText
