@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6A2B15172D8B68C50084537A /* HTMLText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B15162D8B68C00084537A /* HTMLText.swift */; };
+		6A2B151B2D8C6B520084537A /* HTMLText+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */; };
+		6A2B151F2D8C70840084537A /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151E2D8C70800084537A /* HTMLTextView.swift */; };
 		E1316F472AFE839000232575 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F462AFE839000232575 /* SampleApp.swift */; };
 		E1316F492AFE839000232575 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F482AFE839000232575 /* RootView.swift */; };
 		E1316F4B2AFE839100232575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1316F4A2AFE839100232575 /* Assets.xcassets */; };
@@ -40,7 +43,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "SwiftUI-Utils.podspec"; path = "../../SwiftUI-Utils.podspec"; sourceTree = "<group>"; };
+		6A2B15162D8B68C00084537A /* HTMLText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLText.swift; sourceTree = "<group>"; };
+		6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTMLText+Environment.swift"; sourceTree = "<group>"; };
+		6A2B151E2D8C70800084537A /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "SwiftUI-Utils.podspec"; path = "../../SwiftUI-Utils.podspec"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E1316F432AFE839000232575 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1316F462AFE839000232575 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
 		E1316F482AFE839000232575 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -85,6 +91,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6A2B15152D8B68B00084537A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6A2B15192D8C6B2A0084537A /* HTMLText */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6A2B15192D8C6B2A0084537A /* HTMLText */ = {
+			isa = PBXGroup;
+			children = (
+				6A2B15162D8B68C00084537A /* HTMLText.swift */,
+				6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */,
+			);
+			path = HTMLText;
+			sourceTree = "<group>";
+		};
 		E1316F3A2AFE839000232575 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +147,7 @@
 				E1316F732AFEA23700232575 /* Modifiers */,
 				E1316F952AFEBA1600232575 /* Shapes */,
 				E1A52D2E2B0264DE008A2B9A /* TextFieldStyles */,
+				6A2B15152D8B68B00084537A /* View */,
 				E1316F872AFEA23F00232575 /* Utils */,
 			);
 			name = "SwiftUI-Utils";
@@ -175,6 +199,7 @@
 		E1316F8B2AFEA32100232575 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				6A2B151E2D8C70800084537A /* HTMLTextView.swift */,
 				E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */,
 				E16CE9362B90BE92007CCA01 /* OnVisibleView.swift */,
 				E1A52D382B026BEF008A2B9A /* PinTopView.swift */,
@@ -307,11 +332,13 @@
 			files = (
 				E1A52D3C2B027EDA008A2B9A /* ViewExtensions.swift in Sources */,
 				E1A52D392B026BEF008A2B9A /* PinTopView.swift in Sources */,
+				6A2B151F2D8C70840084537A /* HTMLTextView.swift in Sources */,
 				E1316F7F2AFEA23700232575 /* PinTopModifier.swift in Sources */,
 				E16CE9352B90BC9A007CCA01 /* OnVisibleModifier.swift in Sources */,
 				E1316F942AFEB30C00232575 /* ScrollViewBackport.swift in Sources */,
 				E1A52D362B026513008A2B9A /* OpacityButtonStyle.swift in Sources */,
 				E1A52D302B0264DE008A2B9A /* ExtendedTapAreaTextFieldStyle.swift in Sources */,
+				6A2B15172D8B68C50084537A /* HTMLText.swift in Sources */,
 				E16CE9332B90BC5E007CCA01 /* Delay.swift in Sources */,
 				E1316F7E2AFEA23700232575 /* ScaleOnScrollModifier.swift in Sources */,
 				E1A502F22B8784A20014EA1B /* ScrollPercentageModifier.swift in Sources */,
@@ -331,6 +358,7 @@
 				E1A52D3E2B02AADD008A2B9A /* ScaleOnScrollView.swift in Sources */,
 				E1316F822AFEA23700232575 /* FrameGetters.swift in Sources */,
 				E1316F892AFEA25D00232575 /* EnumCaseBinding.swift in Sources */,
+				6A2B151B2D8C6B520084537A /* HTMLText+Environment.swift in Sources */,
 				E1A502F02B8782C10014EA1B /* ScrollThresholdView.swift in Sources */,
 				E1316F802AFEA23700232575 /* FadeOutOnScrollModifier.swift in Sources */,
 				E1316F922AFEAEB000232575 /* Backport.swift in Sources */,
