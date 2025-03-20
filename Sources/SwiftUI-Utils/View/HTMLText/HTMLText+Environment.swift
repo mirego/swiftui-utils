@@ -4,7 +4,6 @@ extension EnvironmentValues {
     @Entry var htmlForegroundColor: SwiftUI.Color = .black
     @Entry var htmlLineLimit: Int?
     @Entry var htmlKerning: CGFloat = 0
-    @Entry var htmlBaseFontSize: CGFloat = 16
     @Entry var htmlFont: HTMLFont = .system
     @Entry var htmlLineSpacing: CGFloat?
 }
@@ -21,10 +20,6 @@ extension View {
 
     public func htmlKerning(_ kerning: CGFloat) -> some View {
         environment(\.htmlKerning, kerning)
-    }
-
-    public func htmlBaseFontSize(_ size: CGFloat) -> some View {
-        environment(\.htmlBaseFontSize, size)
     }
 
     public func htmlFont(_ font: HTMLFont) -> some View {

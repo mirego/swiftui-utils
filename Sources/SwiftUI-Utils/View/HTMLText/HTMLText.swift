@@ -1,17 +1,16 @@
 import os
 import SwiftUI
 
-public enum HTMLFont {
-    case system
-    case named(String)
+public struct HTMLFont {
+    let name: String?
+    let size: CGFloat
 
-    var name: String? {
-        switch self {
-        case .system:
-            nil
-        case .named(let name):
-            name
-        }
+    static let system = HTMLFont(name: nil, size: 16)
+    static func system(size: CGFloat) -> Self {
+        HTMLFont(name: nil, size: size)
+    }
+    static func named(_ name: String, size: CGFloat) -> Self {
+        HTMLFont(name: name, size: size)
     }
 }
 
@@ -22,7 +21,6 @@ public struct HTMLText: UIViewRepresentable {
     @Environment(\.htmlLineLimit) var lineLimit
     @Environment(\.htmlForegroundColor) var foregroundColor
     @Environment(\.htmlKerning) var kerning
-    @Environment(\.htmlBaseFontSize) var baseFontSize
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
 
@@ -68,7 +66,7 @@ public struct HTMLText: UIViewRepresentable {
             <style>
                 body {
                     font-family: \(font.name.map { "\($0), " } ?? "")'-apple-system';
-                    font-size: \(baseFontSize);
+                    font-size: \(font.size);
                     line-height: \(lineSpacing.map { "\(displayScale * $0)px" } ?? "normal");
                     -webkit-text-size-adjust: none;
                     margin: 0;

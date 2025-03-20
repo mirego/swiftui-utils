@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HTMLTextView: View {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @State var urlToOpen: URL?
 
     var body: some View {
@@ -60,8 +61,7 @@ struct HTMLTextView: View {
                 }
             }
             .padding()
-            .htmlFont(.named("Menlo"))
-            .htmlBaseFontSize(16)
+            .htmlFont(.named("Menlo", size: dynamicTypeSize.isAccessibilitySize ? 24 : 16))
             .htmlForegroundColor(.secondary)
             .htmlKerning(0)
             .htmlLineSpacing(8)
