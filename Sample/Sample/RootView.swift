@@ -7,6 +7,7 @@ struct RootView: View {
         case headerParallaxScale
         case scrollThreshold
         case onVisible
+        case html
     }
 
     private struct Section {
@@ -19,7 +20,8 @@ struct RootView: View {
         Section(title: "Scale On Scroll", navigation: .scaleOnScroll),
         Section(title: "Header Parallax Scale", navigation: .headerParallaxScale),
         Section(title: "Scroll Threshold", navigation: .scrollThreshold),
-        Section(title: "On Visible", navigation: .onVisible)
+        Section(title: "On Visible", navigation: .onVisible),
+        Section(title: "HTML", navigation: .html)
     ]
 
     @State var navigation: Navigation?
@@ -56,6 +58,9 @@ struct RootView: View {
         }
         .sheet(isPresented: $navigation.isActive(.onVisible)) {
             OnVisibleView()
+        }
+        .sheet(isPresented: $navigation.isActive(.html)) {
+            HTMLTextView()
         }
     }
 }
