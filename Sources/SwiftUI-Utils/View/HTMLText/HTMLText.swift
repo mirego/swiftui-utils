@@ -24,6 +24,7 @@ public struct HTMLText: UIViewRepresentable {
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
     @Environment(\.htmlLineBreakMode) var lineBreakMode
+    @Environment(\.htmlAccessibilityTraits) var accessibilityTraits
 
     let html: String
 
@@ -42,7 +43,7 @@ public struct HTMLText: UIViewRepresentable {
         view.textContainer.lineBreakMode = lineBreakMode
         view.textContainer.maximumNumberOfLines = lineLimit ?? 0
         view.textContainerInset = .zero
-        view.accessibilityTraits = .staticText
+        view.accessibilityTraits = accessibilityTraits
         view.delegate = context.coordinator
         return view
     }
@@ -128,7 +129,7 @@ extension HTMLText {
                 .characterEncoding: String.Encoding.utf8.rawValue,
             ]
             let attributes: [NSAttributedString.Key: Any] = [
-                .kern: kerning
+                .kern: kerning,
             ]
 
             let attributedString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)

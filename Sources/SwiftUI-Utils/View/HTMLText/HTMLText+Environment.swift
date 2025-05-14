@@ -7,6 +7,7 @@ extension EnvironmentValues {
     @Entry var htmlFont: HTMLFont = .system
     @Entry var htmlLineSpacing: CGFloat?
     @Entry var htmlLineBreakMode: NSLineBreakMode = .byTruncatingTail
+    @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
 }
 
 extension View {
@@ -33,5 +34,9 @@ extension View {
 
     public func htmlLineBreakMode(_ mode: NSLineBreakMode) -> some View {
         environment(\.htmlLineBreakMode, mode)
+    }
+
+    public func htmlAccessibilityTraits(_ traits: UIAccessibilityTraits) -> some View {
+        environment(\.htmlAccessibilityTraits, traits)
     }
 }
