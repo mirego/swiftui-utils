@@ -13,12 +13,14 @@ struct HTMLTextView: View {
                         RoundedCorner(radius: 12)
                             .strokeBorder(.tertiary)
                     }
+                    .htmlAccessibilityTraits(.header)
                 HTMLText(html: "<h2>First test</h2>")
                     .padding()
                     .background {
                         RoundedCorner(radius: 12)
                             .strokeBorder(.tertiary)
                     }
+                    .htmlAccessibilityTraits(.header)
                 HTMLText(html: "<p>A <b>paragraph</b>. It's longer, and wider, and better. It should be on 2 lines, hopefully. </p>")
                     .padding()
                     .background {
@@ -31,6 +33,7 @@ struct HTMLTextView: View {
                         RoundedCorner(radius: 12)
                             .strokeBorder(.tertiary)
                     }
+                    .htmlAccessibilityTraits(.header)
                 HTMLText(html: "<i>This is a lonely italic line. </i>")
                     .padding()
                     .background {
