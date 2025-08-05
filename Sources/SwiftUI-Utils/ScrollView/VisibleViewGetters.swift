@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension View {
-    public func setLoadedItem(_ itemId: String) -> some View {
+    public func visibleViewIdentifier(_ itemId: String) -> some View {
         anchorPreference(
             key: LoadedItemsPreferenceKey.self,
             value: .bounds,
@@ -13,7 +13,7 @@ extension View {
 }
 
 extension ScrollView {
-    public func readVisibleItems(_ items: @escaping ([String]) -> Void) -> some View {
+    public func onVisibleViewIdentifiersChange(_ items: @escaping ([String]) -> Void) -> some View {
         backgroundPreferenceValue(LoadedItemsPreferenceKey.self) { loadedItems in
             ReadVisibleItemView(loadedItems: loadedItems)
         }
@@ -22,11 +22,8 @@ extension ScrollView {
         }
     }
 
-    public func readVisibleItems(_ items: Binding<[String]>) -> some View {
-        backgroundPreferenceValue(LoadedItemsPreferenceKey.self) { loadedItems in
-            ReadVisibleItemView(loadedItems: loadedItems)
-        }
-        .onPreferenceChange(VisibleItemsPreferenceKey.self) {
+    public func onVisibleViewIdentifiersChange(_ items: Binding<[String]>) -> some View {
+        onVisibleViewIdentifiersChange {
             items.wrappedValue = $0
         }
     }

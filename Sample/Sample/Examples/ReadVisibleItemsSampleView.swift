@@ -18,12 +18,12 @@ struct ReadVisibleItemsSampleView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(.mint, in: RoundedRectangle(cornerRadius: 8))
-                            .setLoadedItem(item)
+                            .visibleViewIdentifier(item)
                     }
                 }
                 .padding()
             }
-            .readVisibleItems($visibleItems)
+            .onVisibleViewIdentifiersChange($visibleItems)
         }
     }
 }
