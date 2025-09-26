@@ -8,6 +8,7 @@ extension EnvironmentValues {
     @Entry var htmlLineSpacing: CGFloat?
     @Entry var htmlLineBreakMode: NSLineBreakMode = .byTruncatingTail
     @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
+    @Entry var htmlTextAlignment: NSTextAlignment = .natural
 }
 
 extension View {
@@ -38,5 +39,9 @@ extension View {
 
     public func htmlAccessibilityTraits(_ traits: UIAccessibilityTraits) -> some View {
         environment(\.htmlAccessibilityTraits, traits)
+    }
+
+    public func htmlTextAlignment(_ textAlignment: NSTextAlignment) -> some View {
+        environment(\.htmlTextAlignment, textAlignment)
     }
 }

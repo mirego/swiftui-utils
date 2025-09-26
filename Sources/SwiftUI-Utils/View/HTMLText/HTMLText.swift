@@ -25,6 +25,7 @@ public struct HTMLText: UIViewRepresentable {
     @Environment(\.htmlLineSpacing) var lineSpacing
     @Environment(\.htmlLineBreakMode) var lineBreakMode
     @Environment(\.htmlAccessibilityTraits) var accessibilityTraits
+    @Environment(\.htmlTextAlignment) var textAlignment
 
     let html: String
 
@@ -53,6 +54,7 @@ public struct HTMLText: UIViewRepresentable {
             textView.attributedText = context.coordinator.format(html: fullHtml)
             textView.textColor = UIColor(foregroundColor)
             textView.textContainer.maximumNumberOfLines = lineLimit ?? 0
+            textView.textAlignment = textAlignment
             textView.invalidateIntrinsicContentSize()
         }
     }
