@@ -10,6 +10,7 @@
 		6A2B15172D8B68C50084537A /* HTMLText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B15162D8B68C00084537A /* HTMLText.swift */; };
 		6A2B151B2D8C6B520084537A /* HTMLText+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */; };
 		6A2B151F2D8C70840084537A /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151E2D8C70800084537A /* HTMLTextView.swift */; };
+		B59973262E9FE8B3008362FA /* HTMLTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59973252E9FE8AE008362FA /* HTMLTransformer.swift */; };
 		E1316F472AFE839000232575 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F462AFE839000232575 /* SampleApp.swift */; };
 		E1316F492AFE839000232575 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F482AFE839000232575 /* RootView.swift */; };
 		E1316F4B2AFE839100232575 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E1316F4A2AFE839100232575 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		6A2B15162D8B68C00084537A /* HTMLText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLText.swift; sourceTree = "<group>"; };
 		6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTMLText+Environment.swift"; sourceTree = "<group>"; };
 		6A2B151E2D8C70800084537A /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		B59973252E9FE8AE008362FA /* HTMLTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTransformer.swift; sourceTree = "<group>"; };
 		E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "SwiftUI-Utils.podspec"; path = "../../SwiftUI-Utils.podspec"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E1316F432AFE839000232575 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1316F462AFE839000232575 /* SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleApp.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 		6A2B15192D8C6B2A0084537A /* HTMLText */ = {
 			isa = PBXGroup;
 			children = (
+				B59973252E9FE8AE008362FA /* HTMLTransformer.swift */,
 				6A2B15162D8B68C00084537A /* HTMLText.swift */,
 				6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */,
 			);
@@ -334,6 +337,7 @@
 				E1A52D392B026BEF008A2B9A /* PinTopView.swift in Sources */,
 				6A2B151F2D8C70840084537A /* HTMLTextView.swift in Sources */,
 				E1316F7F2AFEA23700232575 /* PinTopModifier.swift in Sources */,
+				B59973262E9FE8B3008362FA /* HTMLTransformer.swift in Sources */,
 				E16CE9352B90BC9A007CCA01 /* OnVisibleModifier.swift in Sources */,
 				E1316F942AFEB30C00232575 /* ScrollViewBackport.swift in Sources */,
 				E1A52D362B026513008A2B9A /* OpacityButtonStyle.swift in Sources */,

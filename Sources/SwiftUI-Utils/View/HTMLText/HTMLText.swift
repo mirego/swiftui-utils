@@ -1,7 +1,7 @@
 import os
 import SwiftUI
 
-public struct HTMLFont {
+public struct HTMLFont: Equatable {
     let name: String?
     let size: CGFloat
 
@@ -14,134 +14,90 @@ public struct HTMLFont {
     }
 }
 
-public struct HTMLText: UIViewRepresentable {
-    @Environment(\.displayScale) var displayScale
-    @Environment(\.openURL) var openURL
-
-    @Environment(\.htmlLineLimit) var lineLimit
-    @Environment(\.htmlForegroundColor) var foregroundColor
+public struct HTMLText: View {
     @Environment(\.htmlKerning) var kerning
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
+    
+    @StateObject var transformer = HTMLTransformer()
+    
+    let html: String
+    
+    public init(html: String) {
+        self.html = html
+    }
+    
+    public var body: some View {
+        HTMLAttributedText(attributedString: transformer.html)
+            .onAppear {
+                transformer.style = HTMLStyleSheet(font: font, lineSpacing: lineSpacing, kerning: kerning)
+                transformer.rawHTML = html
+            }
+            .onChange(of: font) { transformer.style.font = $0 }
+            .onChange(of: lineSpacing) { transformer.style.lineSpacing = $0 }
+            .onChange(of: kerning) { transformer.style.kerning = $0 }
+    }
+}
+
+struct HTMLAttributedText: UIViewRepresentable {
+    @Environment(\.htmlLineLimit) var lineLimit
+    @Environment(\.htmlForegroundColor) var foregroundColor
     @Environment(\.htmlLineBreakMode) var lineBreakMode
     @Environment(\.htmlAccessibilityTraits) var accessibilityTraits
     @Environment(\.htmlTextAlignment) var textAlignment
+    @Environment(\.htmlOpenURL) var htmlOpenURL
 
-    let html: String
-
-    public init(html content: String) {
-        html = content
+    let attributedString: NSAttributedString
+    
+    public init(attributedString content: NSAttributedString) {
+        attributedString = content
     }
 
-    public func makeUIView(context: Context) -> UITextView {
+    func makeUIView(context: Context) -> UITextView {
         let view = ContentTextView()
-
         view.isEditable = false
         view.isScrollEnabled = false
         view.backgroundColor = .clear
-        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.textContainer.lineFragmentPadding = .zero
-        view.textContainer.lineBreakMode = lineBreakMode
-        view.textContainer.maximumNumberOfLines = lineLimit ?? 0
         view.textContainerInset = .zero
-        view.accessibilityTraits = accessibilityTraits
+        view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         view.delegate = context.coordinator
         return view
     }
 
-    public func updateUIView(_ textView: UITextView, context: Context) {
-        Task { @MainActor in
-            textView.attributedText = context.coordinator.format(html: fullHtml)
-            textView.textColor = UIColor(foregroundColor)
-            textView.textContainer.maximumNumberOfLines = lineLimit ?? 0
-            textView.textAlignment = textAlignment
-            textView.invalidateIntrinsicContentSize()
-        }
+    func updateUIView(_ textView: UITextView, context: Context) {
+        textView.attributedText = attributedString
+        textView.textContainer.maximumNumberOfLines = lineLimit ?? 0
+        textView.textColor = UIColor(foregroundColor)
+        textView.textContainer.lineBreakMode = lineBreakMode
+        textView.accessibilityTraits = accessibilityTraits
+        textView.textAlignment = textAlignment
     }
 
-    public func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator {
         Coordinator(self)
-    }
-
-    private var fullHtml: String {
-        """
-        <html>
-        <head>
-            <style>
-                body {
-                    font-family: \(font.name.map { "\($0), " } ?? "")'-apple-system';
-                    font-size: \(font.size);
-                    line-height: \(lineSpacing.map { "\(displayScale * $0)px" } ?? "normal");
-                    -webkit-text-size-adjust: none;
-                    margin: 0;
-                }
-            </style>
-        </head>
-        <body>
-            \(html)
-        </body>
-        </html>
-        """
     }
 }
 
-extension HTMLText {
+extension HTMLAttributedText {
 
-    public class Coordinator: NSObject, UITextViewDelegate {
+    class Coordinator: NSObject, UITextViewDelegate {
         private let logger = Logger(subsystem: "HTMLText", category: "Coordinator")
         private var cached: (input: String, result: NSAttributedString?)?
 
-        let parent: HTMLText
+        let parent: HTMLAttributedText
 
-        init(_ parent: HTMLText) {
+        init(_ parent: HTMLAttributedText) {
             self.parent = parent
         }
 
-        func format(html: String) -> NSAttributedString? {
-            guard html != cached?.input else {
-                return cached?.result
+        func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+            if let openURL = parent.htmlOpenURL {
+                logger.info("Opening URL \(url)")
+                openURL(url)
             }
-
-            let formatter = HtmlToAttributedStringFormatter(kerning: parent.kerning)
-            do {
-                cached = (html, try formatter.format(html: html))
-            } catch {
-                logger.warning("\(error.localizedDescription)")
-            }
-            return cached?.result
-        }
-
-        public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-            parent.openURL(URL)
+            
             return false
-        }
-    }
-
-    private struct HtmlToAttributedStringFormatter {
-        let kerning: CGFloat
-
-        func format(html string: String) throws -> NSAttributedString? {
-            guard
-                !string.isEmpty,
-                let data = string.data(using: .utf8)
-            else { return nil }
-
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: String.Encoding.utf8.rawValue,
-            ]
-            let attributes: [NSAttributedString.Key: Any] = [
-                .kern: kerning,
-            ]
-
-            let attributedString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
-            let range = NSRange(location: 0, length: attributedString.length)
-            attributedString.addAttributes(attributes, range: range)
-            attributedString.enumerateAttribute(.link, in: range) { value, range, _ in
-                guard value != nil else { return }
-                attributedString.removeAttribute(.underlineStyle, range: range)
-            }
-            return attributedString.trimmingTrailingCharacters(in: .newlines)
         }
     }
 
@@ -149,27 +105,20 @@ extension HTMLText {
         override var canBecomeFirstResponder: Bool { false }
 
         override var intrinsicContentSize: CGSize {
-            if frame.height > 0 {
-                sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude))
+            let sizeThatFits = sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude))
+            let intrinsic = super.intrinsicContentSize
+            
+            let size = if frame.height > 0 {
+                sizeThatFits
             } else {
-                super.intrinsicContentSize
+                intrinsic
             }
+            
+            let textSize = attributedText.size()
+            
+            print(size, sizeThatFits, intrinsic, textSize)
+            
+            return size
         }
-    }
-}
-
-extension NSMutableAttributedString {
-
-    func trimmingTrailingCharacters(in characters: CharacterSet) -> NSMutableAttributedString {
-        guard !string.isEmpty else {
-            return self
-        }
-
-        let attributedString = NSMutableAttributedString(attributedString: self)
-        while let last = attributedString.string.unicodeScalars.last, characters.contains(last) {
-            attributedString.deleteCharacters(in: NSRange(location: attributedString.length - 1, length: 1))
-        }
-
-        return attributedString
     }
 }

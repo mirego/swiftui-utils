@@ -9,6 +9,20 @@ extension EnvironmentValues {
     @Entry var htmlLineBreakMode: NSLineBreakMode = .byTruncatingTail
     @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
     @Entry var htmlTextAlignment: NSTextAlignment = .natural
+    @Entry var htmlOpenURL: HTMLOpenURLAction? = nil
+}
+
+struct HTMLOpenURLAction: Equatable {
+    let id = UUID()
+    let handler: (URL) -> Void
+    
+    func callAsFunction(_ url: URL) {
+        handler(url)
+    }
+
+    static func == (lhs: HTMLOpenURLAction, rhs: HTMLOpenURLAction) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
 extension View {
@@ -43,5 +57,9 @@ extension View {
 
     public func htmlTextAlignment(_ textAlignment: NSTextAlignment) -> some View {
         environment(\.htmlTextAlignment, textAlignment)
+    }
+    
+    public func onHTMLOpenURL(_ perform: @escaping (URL) -> Void) -> some View {
+        environment(\.htmlOpenURL, HTMLOpenURLAction(handler: perform))
     }
 }

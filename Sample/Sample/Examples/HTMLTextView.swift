@@ -68,12 +68,12 @@ struct HTMLTextView: View {
             .htmlForegroundColor(.secondary)
             .htmlKerning(0)
             .htmlLineSpacing(8)
-            .environment(\.openURL, OpenURLAction { url in
+            .htmlLineBreakMode(.byWordWrapping)
+            .onHTMLOpenURL { url in
                 withAnimation(.snappy) {
                     urlToOpen = url
                 }
-                return .handled
-            })
+            }
         }
         .safeAreaInset(edge: .bottom) {
             if let urlToOpen {
