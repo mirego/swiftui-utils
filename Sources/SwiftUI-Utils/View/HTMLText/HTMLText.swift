@@ -20,6 +20,7 @@ public struct HTMLText: View {
     @Environment(\.htmlLineSpacing) var lineSpacing
     
     @StateObject var transformer = HTMLTransformer()
+    @State var width: CGFloat?
     
     let html: String
     
@@ -28,7 +29,8 @@ public struct HTMLText: View {
     }
     
     public var body: some View {
-        HTMLAttributedText(attributedString: transformer.html)
+        HTMLAttributedText(attributedString: transformer.html, availableWidth: width)
+            .read(\.width, $width)
             .onAppear {
                 transformer.style = HTMLStyleSheet(font: font, lineSpacing: lineSpacing, kerning: kerning)
                 transformer.rawHTML = html
@@ -48,9 +50,11 @@ struct HTMLAttributedText: UIViewRepresentable {
     @Environment(\.htmlOpenURL) var htmlOpenURL
 
     let attributedString: NSAttributedString
+    let width: CGFloat?
     
-    public init(attributedString content: NSAttributedString) {
+    init(attributedString content: NSAttributedString, availableWidth: CGFloat?) {
         attributedString = content
+        width = availableWidth
     }
 
     func makeUIView(context: Context) -> UITextView {
@@ -66,6 +70,9 @@ struct HTMLAttributedText: UIViewRepresentable {
     }
 
     func updateUIView(_ textView: UITextView, context: Context) {
+        if let width {
+            textView.frame.size.width = width
+        }
         textView.attributedText = attributedString
         textView.textContainer.maximumNumberOfLines = lineLimit ?? 0
         textView.textColor = UIColor(foregroundColor)
@@ -105,20 +112,8 @@ extension HTMLAttributedText {
         override var canBecomeFirstResponder: Bool { false }
 
         override var intrinsicContentSize: CGSize {
-            let sizeThatFits = sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude))
-            let intrinsic = super.intrinsicContentSize
-            
-            let size = if frame.height > 0 {
-                sizeThatFits
-            } else {
-                intrinsic
-            }
-            
-            let textSize = attributedText.size()
-            
-            print(size, sizeThatFits, intrinsic, textSize)
-            
-            return size
+            let size = CGSize(width: bounds.width, height: .greatestFiniteMagnitude)
+            return sizeThatFits(size)
         }
     }
 }
