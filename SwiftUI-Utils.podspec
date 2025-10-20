@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name          = "SwiftUI-Utils"
-  spec.version       = "1.0.16"
+  spec.version       = "1.0.17"
   spec.summary       = "SwiftUI Utils library"
   spec.description   = "SwiftUI Utils is a library that contains several helpful components and extension methods to help you build the best SwiftUI apps."
   spec.homepage      = "https://github.com/mirego/swiftui-utils"
