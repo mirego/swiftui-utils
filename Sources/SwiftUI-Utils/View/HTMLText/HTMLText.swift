@@ -18,6 +18,7 @@ public struct HTMLText: View {
     @Environment(\.htmlKerning) var kerning
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
+    @Environment(\.htmlCache) var sharedCache
     
     @StateObject var transformer = HTMLTransformer()
     @State var width: CGFloat?
@@ -32,6 +33,7 @@ public struct HTMLText: View {
         HTMLAttributedText(attributedString: transformer.html, availableWidth: width)
             .read(\.width, $width)
             .onAppear {
+                transformer.sharedCache = sharedCache
                 transformer.style = HTMLStyleSheet(font: font, lineSpacing: lineSpacing, kerning: kerning)
                 transformer.rawHTML = html
             }
@@ -90,7 +92,6 @@ extension HTMLAttributedText {
 
     class Coordinator: NSObject, UITextViewDelegate {
         private let logger = Logger(subsystem: "HTMLText", category: "Coordinator")
-        private var cached: (input: String, result: NSAttributedString?)?
 
         let parent: HTMLAttributedText
 

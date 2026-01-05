@@ -1,5 +1,55 @@
+import DTCoreText
 import Foundation
 import os
+import SwiftUI
+import UIKit
+
+public final class HTMLCacheManager: NSObject, NSCacheDelegate {
+    private let logger = Logger(subsystem: "SwiftUI-Utils", category: "HTMLCache")
+    private let cache = NSCache<NSString, NSAttributedString>()
+
+    public override init() {
+        super.init()
+        cache.name = "com.mirego.swiftui-utils.HTMLCache.\(ObjectIdentifier(self))"
+        cache.countLimit = 50
+        cache.delegate = self
+    }
+
+    func get(forKey key: NSString) -> NSAttributedString? {
+        cache.object(forKey: key)
+    }
+
+    func set(_ value: NSAttributedString, forKey key: NSString) {
+        cache.setObject(value, forKey: key)
+    }
+
+    public func clear() {
+        cache.removeAllObjects()
+    }
+
+    public func cache(_ cache: NSCache<AnyObject, AnyObject>, willEvictObject obj: Any) {
+        #if DEBUG
+        logger.debug("Cache evicting object")
+        #endif
+    }
+}
+
+private struct HTMLCacheEnvironmentKey: EnvironmentKey {
+    static let defaultValue: HTMLCacheManager? = nil
+}
+
+public extension EnvironmentValues {
+    var htmlCache: HTMLCacheManager? {
+        get { self[HTMLCacheEnvironmentKey.self] }
+        set { self[HTMLCacheEnvironmentKey.self] = newValue }
+    }
+}
+
+public extension View {
+    func htmlCache(_ cache: HTMLCacheManager) -> some View {
+        environment(\.htmlCache, cache)
+    }
+}
 
 struct HTMLStyleSheet {
     var font: HTMLFont = .system
@@ -10,62 +60,51 @@ struct HTMLStyleSheet {
 @MainActor
 class HTMLTransformer: ObservableObject {
     private let logger = Logger(subsystem: "HTMLText", category: "Transformer")
-    
+
     @Published var html: NSAttributedString = NSAttributedString(string: "")
-    
+
+    private lazy var localCache = HTMLCacheManager()
+    var sharedCache: HTMLCacheManager?
+
+    private var cache: HTMLCacheManager {
+        sharedCache ?? localCache
+    }
+
     var style: HTMLStyleSheet = HTMLStyleSheet() {
         didSet { update(html: rawHTML, using: style) }
     }
     var rawHTML: String = "" {
         didSet { update(html: rawHTML, using: style) }
     }
-    
+
     private func update(html string: String, using style: HTMLStyleSheet) {
         guard !string.isEmpty else {
             html = NSAttributedString(string: "")
             return
         }
-        
-        let formatter = HtmlStringToAttributedStringFormatter(style: style)
-        do {
-            html = try formatter.format(html: string) ?? NSAttributedString(string: "")
-        } catch {
-            logger.warning("\(error.localizedDescription)")
+
+        let cacheKey = "\(string.hashValue)_\(style.font.name ?? "system")_\(style.font.size)_\(style.lineSpacing ?? 0)_\(style.kerning)" as NSString
+
+        if let cached = cache.get(forKey: cacheKey) {
+            html = cached
+            return
+        }
+
+        let result = DTCoreTextParser.parse(html: string, style: style)
+        if let result {
+            cache.set(result, forKey: cacheKey)
+            html = result
+        } else {
+            logger.warning("Failed to parse HTML")
             html = NSAttributedString(string: "")
         }
     }
 }
 
-@MainActor
-private struct HtmlStringToAttributedStringFormatter {
-    let style: HTMLStyleSheet
+private enum DTCoreTextParser {
 
-    func format(html string: String) throws -> NSAttributedString? {
-        guard
-            !string.isEmpty,
-            let data = embedHTML(string).data(using: .utf8)
-        else { return nil }
-
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue,
-        ]
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: style.kerning,
-        ]
-
-        let attributedString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
-        let range = NSRange(location: 0, length: attributedString.length)
-        attributedString.addAttributes(attributes, range: range)
-        attributedString.enumerateAttribute(.link, in: range) { value, range, _ in
-            guard value != nil else { return }
-            attributedString.removeAttribute(.underlineStyle, range: range)
-        }
-        return attributedString.trimmingTrailingCharacters(in: .newlines)
-    }
-    
-    private func embedHTML(_ html: String) -> String {
-        """
+    static func parse(html: String, style: HTMLStyleSheet) -> NSAttributedString? {
+        let styledHTML = """
         <html>
         <head>
             <style>
@@ -76,6 +115,9 @@ private struct HtmlStringToAttributedStringFormatter {
                     -webkit-text-size-adjust: none;
                     margin: 0;
                 }
+                a {
+                    text-decoration: none;
+                }
             </style>
         </head>
         <body>
@@ -83,6 +125,30 @@ private struct HtmlStringToAttributedStringFormatter {
         </body>
         </html>
         """
+
+        guard let data = styledHTML.data(using: .utf8) else { return nil }
+
+        let options: [String: Any] = [
+            DTUseiOS6Attributes: true,
+            DTDefaultFontFamily: style.font.name ?? "-apple-system",
+            DTDefaultFontSize: style.font.size,
+            DTDefaultLinkColor: UIColor.link,
+            DTDefaultLinkDecoration: false
+        ]
+
+        guard let builder = DTHTMLAttributedStringBuilder(
+            html: data,
+            options: options,
+            documentAttributes: nil
+        ), let attributedString = builder.generatedAttributedString() else {
+            return nil
+        }
+
+        let mutableString = NSMutableAttributedString(attributedString: attributedString)
+        let fullRange = NSRange(location: 0, length: mutableString.length)
+        mutableString.addAttribute(.kern, value: style.kerning, range: fullRange)
+
+        return mutableString.trimmingTrailingCharacters(in: .newlines)
     }
 }
 
