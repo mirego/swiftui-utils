@@ -1,5 +1,22 @@
 import SwiftUI
 
+public enum HTMLCacheConfiguration: Equatable {
+    case `default`
+    case custom(NSCache<NSString, NSAttributedString>)
+    case disabled
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.default, .default), (.disabled, .disabled):
+            return true
+        case let (.custom(lhsCache), .custom(rhsCache)):
+            return lhsCache === rhsCache
+        default:
+            return false
+        }
+    }
+}
+
 extension EnvironmentValues {
     @Entry var htmlForegroundColor: SwiftUI.Color = .black
     @Entry var htmlLineLimit: Int?
@@ -10,6 +27,7 @@ extension EnvironmentValues {
     @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
     @Entry var htmlTextAlignment: NSTextAlignment = .natural
     @Entry var htmlOpenURL: HTMLOpenURLAction? = nil
+    @Entry var htmlCacheConfiguration: HTMLCacheConfiguration = .default
 }
 
 struct HTMLOpenURLAction: Equatable {
@@ -61,5 +79,13 @@ extension View {
     
     public func onHTMLOpenURL(_ perform: @escaping (URL) -> Void) -> some View {
         environment(\.htmlOpenURL, HTMLOpenURLAction(handler: perform))
+    }
+
+    public func htmlCache(_ cache: NSCache<NSString, NSAttributedString>?) -> some View {
+        environment(\.htmlCacheConfiguration, cache.map { .custom($0) } ?? .default)
+    }
+
+    public func htmlCacheDisabled(_ disabled: Bool = true) -> some View {
+        environment(\.htmlCacheConfiguration, disabled ? .disabled : .default)
     }
 }

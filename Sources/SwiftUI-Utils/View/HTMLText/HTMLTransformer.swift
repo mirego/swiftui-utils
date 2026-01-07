@@ -21,7 +21,20 @@ struct HTMLStyleSheet {
 @MainActor
 class HTMLTransformer: ObservableObject {
     @Published var html: NSAttributedString = NSAttributedString(string: "")
-    
+
+    var cacheConfiguration: HTMLCacheConfiguration = .default
+
+    private var activeCache: NSCache<NSString, NSAttributedString>? {
+        switch cacheConfiguration {
+        case .default:
+            return sharedHTMLCache
+        case .custom(let cache):
+            return cache
+        case .disabled:
+            return nil
+        }
+    }
+
     var style: HTMLStyleSheet = HTMLStyleSheet() {
         didSet { update(html: rawHTML, using: style) }
     }
@@ -34,16 +47,16 @@ class HTMLTransformer: ObservableObject {
             html = NSAttributedString(string: "")
             return
         }
-        
+
         let cacheKey = "\(string.hashValue)_\(style.font.name ?? "system")_\(style.font.size)_\(style.lineSpacing ?? 0)_\(style.kerning)" as NSString
-        
-        if let cached = sharedHTMLCache.object(forKey: cacheKey) {
+
+        if let cached = activeCache?.object(forKey: cacheKey) {
             html = cached
             return
         }
-        
+
         if let result = DTCoreTextParser.parse(html: string, style: style) {
-            sharedHTMLCache.setObject(result, forKey: cacheKey)
+            activeCache?.setObject(result, forKey: cacheKey)
             html = result
         } else {
             html = NSAttributedString(string: "")
