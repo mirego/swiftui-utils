@@ -7,6 +7,7 @@ struct HTMLStyleSheet {
     var kerning: CGFloat = 0
 }
 
+@MainActor
 class HTMLTransformer: ObservableObject {
     private let logger = Logger(subsystem: "HTMLText", category: "Transformer")
     
@@ -21,6 +22,7 @@ class HTMLTransformer: ObservableObject {
     
     private func update(html string: String, using style: HTMLStyleSheet) {
         guard !string.isEmpty else {
+            html = NSAttributedString(string: "")
             return
         }
         
@@ -34,6 +36,7 @@ class HTMLTransformer: ObservableObject {
     }
 }
 
+@MainActor
 private struct HtmlStringToAttributedStringFormatter {
     let style: HTMLStyleSheet
 
