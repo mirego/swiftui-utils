@@ -1,5 +1,26 @@
 import SwiftUI
 
+public struct HTMLCacheConfiguration: Equatable {
+    let cache: NSCache<NSString, NSAttributedString>?
+
+    public static let `default`: HTMLCacheConfiguration = {
+        let cache = NSCache<NSString, NSAttributedString>()
+        cache.countLimit = 100
+        cache.name = "com.mirego.swiftui-utils.HTMLCache"
+        return HTMLCacheConfiguration(cache: cache)
+    }()
+
+    public static func custom(_ cache: NSCache<NSString, NSAttributedString>) -> HTMLCacheConfiguration {
+        HTMLCacheConfiguration(cache: cache)
+    }
+
+    public static var disabled = HTMLCacheConfiguration(cache: nil)
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.cache === rhs.cache
+    }
+}
+
 extension EnvironmentValues {
     @Entry var htmlForegroundColor: SwiftUI.Color = .black
     @Entry var htmlLineLimit: Int?
@@ -10,6 +31,7 @@ extension EnvironmentValues {
     @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
     @Entry var htmlTextAlignment: NSTextAlignment = .natural
     @Entry var htmlOpenURL: HTMLOpenURLAction? = nil
+    @Entry var htmlCacheConfiguration: HTMLCacheConfiguration = .default
 }
 
 struct HTMLOpenURLAction: Equatable {
@@ -61,5 +83,13 @@ extension View {
     
     public func onHTMLOpenURL(_ perform: @escaping (URL) -> Void) -> some View {
         environment(\.htmlOpenURL, HTMLOpenURLAction(handler: perform))
+    }
+
+    public func htmlCache(_ cache: NSCache<NSString, NSAttributedString>?) -> some View {
+        environment(\.htmlCacheConfiguration, cache.map { .custom($0) } ?? .default)
+    }
+
+    public func htmlCacheDisabled(_ disabled: Bool = true) -> some View {
+        environment(\.htmlCacheConfiguration, disabled ? .disabled : .default)
     }
 }

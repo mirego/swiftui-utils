@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name          = "SwiftUI-Utils"
-  spec.version       = "1.0.18"
+  spec.version       = "1.0.19"
   spec.summary       = "SwiftUI Utils library"
   spec.description   = "SwiftUI Utils is a library that contains several helpful components and extension methods to help you build the best SwiftUI apps."
   spec.homepage      = "https://github.com/mirego/swiftui-utils"
@@ -11,4 +11,5 @@ Pod::Spec.new do |spec|
   spec.static_framework = true
   spec.ios.deployment_target = "15.0"
   spec.swift_versions = "5.0"
+  spec.dependency 'DTCoreText'
 end

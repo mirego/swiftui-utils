@@ -1,5 +1,7 @@
+import DTCoreText
 import Foundation
-import os
+import SwiftUI
+import UIKit
 
 struct HTMLStyleSheet {
     var font: HTMLFont = .system
@@ -9,10 +11,14 @@ struct HTMLStyleSheet {
 
 @MainActor
 class HTMLTransformer: ObservableObject {
-    private let logger = Logger(subsystem: "HTMLText", category: "Transformer")
-    
     @Published var html: NSAttributedString = NSAttributedString(string: "")
-    
+
+    var cacheConfiguration: HTMLCacheConfiguration = .default
+
+    private var activeCache: NSCache<NSString, NSAttributedString>? {
+        cacheConfiguration.cache
+    }
+
     var style: HTMLStyleSheet = HTMLStyleSheet() {
         didSet { update(html: rawHTML, using: style) }
     }
@@ -25,47 +31,27 @@ class HTMLTransformer: ObservableObject {
             html = NSAttributedString(string: "")
             return
         }
-        
-        let formatter = HtmlStringToAttributedStringFormatter(style: style)
-        do {
-            html = try formatter.format(html: string) ?? NSAttributedString(string: "")
-        } catch {
-            logger.warning("\(error.localizedDescription)")
+
+        let cacheKey = "\(string.hashValue)_\(style.font.name ?? "system")_\(style.font.size)_\(style.lineSpacing ?? 0)_\(style.kerning)" as NSString
+
+        if let cached = activeCache?.object(forKey: cacheKey) {
+            html = cached
+            return
+        }
+
+        if let result = DTCoreTextParser.parse(html: string, style: style) {
+            activeCache?.setObject(result, forKey: cacheKey)
+            html = result
+        } else {
             html = NSAttributedString(string: "")
         }
     }
 }
 
-@MainActor
-private struct HtmlStringToAttributedStringFormatter {
-    let style: HTMLStyleSheet
+private enum DTCoreTextParser {
 
-    func format(html string: String) throws -> NSAttributedString? {
-        guard
-            !string.isEmpty,
-            let data = embedHTML(string).data(using: .utf8)
-        else { return nil }
-
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue,
-        ]
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: style.kerning,
-        ]
-
-        let attributedString = try NSMutableAttributedString(data: data, options: options, documentAttributes: nil)
-        let range = NSRange(location: 0, length: attributedString.length)
-        attributedString.addAttributes(attributes, range: range)
-        attributedString.enumerateAttribute(.link, in: range) { value, range, _ in
-            guard value != nil else { return }
-            attributedString.removeAttribute(.underlineStyle, range: range)
-        }
-        return attributedString.trimmingTrailingCharacters(in: .newlines)
-    }
-    
-    private func embedHTML(_ html: String) -> String {
-        """
+    static func parse(html: String, style: HTMLStyleSheet) -> NSAttributedString? {
+        let styledHTML = """
         <html>
         <head>
             <style>
@@ -83,6 +69,30 @@ private struct HtmlStringToAttributedStringFormatter {
         </body>
         </html>
         """
+
+        guard let data = styledHTML.data(using: .utf8) else { return nil }
+
+        let options: [String: Any] = [
+            DTUseiOS6Attributes: true,
+            DTDefaultFontFamily: style.font.name ?? "-apple-system",
+            DTDefaultFontSize: style.font.size,
+            DTDefaultLinkColor: UIColor.link,
+            DTDefaultLinkDecoration: false
+        ]
+
+        guard let builder = DTHTMLAttributedStringBuilder(
+            html: data,
+            options: options,
+            documentAttributes: nil
+        ), let attributedString = builder.generatedAttributedString() else {
+            return nil
+        }
+
+        let mutableString = NSMutableAttributedString(attributedString: attributedString)
+        let fullRange = NSRange(location: 0, length: mutableString.length)
+        mutableString.addAttribute(.kern, value: style.kerning, range: fullRange)
+
+        return mutableString.trimmingTrailingCharacters(in: .newlines)
     }
 }
 
