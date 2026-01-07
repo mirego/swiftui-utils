@@ -3,15 +3,6 @@ import Foundation
 import SwiftUI
 import UIKit
 
-// Module-level cache - shared across all HTMLText views
-// NSCache auto-evicts under memory pressure (LRU-like behavior)
-private let sharedHTMLCache: NSCache<NSString, NSAttributedString> = {
-    let cache = NSCache<NSString, NSAttributedString>()
-    cache.countLimit = 100
-    cache.name = "com.mirego.swiftui-utils.HTMLCache"
-    return cache
-}()
-
 struct HTMLStyleSheet {
     var font: HTMLFont = .system
     var lineSpacing: CGFloat?
@@ -25,14 +16,7 @@ class HTMLTransformer: ObservableObject {
     var cacheConfiguration: HTMLCacheConfiguration = .default
 
     private var activeCache: NSCache<NSString, NSAttributedString>? {
-        switch cacheConfiguration {
-        case .default:
-            return sharedHTMLCache
-        case .custom(let cache):
-            return cache
-        case .disabled:
-            return nil
-        }
+        cacheConfiguration.cache
     }
 
     var style: HTMLStyleSheet = HTMLStyleSheet() {

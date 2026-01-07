@@ -1,19 +1,23 @@
 import SwiftUI
 
-public enum HTMLCacheConfiguration: Equatable {
-    case `default`
-    case custom(NSCache<NSString, NSAttributedString>)
-    case disabled
+public struct HTMLCacheConfiguration: Equatable {
+    let cache: NSCache<NSString, NSAttributedString>?
+
+    public static let `default`: HTMLCacheConfiguration = {
+        let cache = NSCache<NSString, NSAttributedString>()
+        cache.countLimit = 100
+        cache.name = "com.mirego.swiftui-utils.HTMLCache"
+        return HTMLCacheConfiguration(cache: cache)
+    }()
+
+    public static func custom(_ cache: NSCache<NSString, NSAttributedString>) -> HTMLCacheConfiguration {
+        HTMLCacheConfiguration(cache: cache)
+    }
+
+    public static var disabled = HTMLCacheConfiguration(cache: nil)
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.default, .default), (.disabled, .disabled):
-            return true
-        case let (.custom(lhsCache), .custom(rhsCache)):
-            return lhsCache === rhsCache
-        default:
-            return false
-        }
+        lhs.cache === rhs.cache
     }
 }
 
