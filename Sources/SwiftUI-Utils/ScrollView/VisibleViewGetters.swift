@@ -12,7 +12,7 @@ extension View {
     }
 }
 
-extension ScrollView {
+extension View {
     public func onVisibleViewIdentifiersChange(_ items: @escaping ([String]) -> Void) -> some View {
         backgroundPreferenceValue(LoadedItemsPreferenceKey.self) { loadedItems in
             ReadVisibleItemView(loadedItems: loadedItems)
