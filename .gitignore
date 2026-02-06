@@ -23,3 +23,8 @@ xcuserdata/
 
 # Swift Package Manager
 .build/
+Package.resolved
+
+# Claude Code
+.claude/
+CLAUDE.md
