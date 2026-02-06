@@ -113,6 +113,8 @@ extension HTMLAttributedText {
     }
 
     private class ContentTextView: UITextView {
+        override var canBecomeFirstResponder: Bool { false }
+        
         override var intrinsicContentSize: CGSize {
             let size = CGSize(width: bounds.width, height: .greatestFiniteMagnitude)
             return sizeThatFits(size)
