@@ -102,12 +102,6 @@ extension HTMLAttributedText {
             self.parent = parent
         }
 
-        func textViewDidChangeSelection(_ textView: UITextView) {
-            if textView.selectedTextRange != nil {
-                textView.selectedTextRange = nil
-            }
-        }
-
         func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
             if let openURL = parent.htmlOpenURL {
                 logger.info("Opening URL \(url)")
