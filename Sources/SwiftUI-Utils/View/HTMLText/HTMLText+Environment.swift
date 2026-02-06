@@ -31,6 +31,7 @@ extension EnvironmentValues {
     @Entry var htmlAccessibilityTraits: UIAccessibilityTraits = .staticText
     @Entry var htmlTextAlignment: NSTextAlignment = .natural
     @Entry var htmlOpenURL: HTMLOpenURLAction? = nil
+    @Entry var htmlLinkColor: SwiftUI.Color = Color(uiColor: .link)
     @Entry var htmlCacheConfiguration: HTMLCacheConfiguration = .default
 }
 
@@ -81,6 +82,10 @@ extension View {
         environment(\.htmlTextAlignment, textAlignment)
     }
     
+    public func htmlLinkColor(_ color: SwiftUI.Color) -> some View {
+        environment(\.htmlLinkColor, color)
+    }
+
     public func onHTMLOpenURL(_ perform: @escaping (URL) -> Void) -> some View {
         environment(\.htmlOpenURL, HTMLOpenURLAction(handler: perform))
     }

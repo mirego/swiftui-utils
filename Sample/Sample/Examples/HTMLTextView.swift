@@ -27,6 +27,7 @@ struct HTMLTextView: View {
                         RoundedCorner(radius: 12)
                             .strokeBorder(.tertiary)
                     }
+                    .htmlLineSpacing(0)
                 HTMLText(html: "<h2>Second test</h2>")
                     .padding()
                     .background {
@@ -40,6 +41,13 @@ struct HTMLTextView: View {
                         RoundedCorner(radius: 12)
                             .strokeBorder(.tertiary)
                     }
+                HTMLText(html: "This is a test with a <b>custom font.</b>. <i>This is a lonely italic line.</i>")
+                    .padding()
+                    .background {
+                        RoundedCorner(radius: 12)
+                            .strokeBorder(.tertiary)
+                    }
+                    .htmlFont(.named("Metal Mania", size: dynamicTypeSize.isAccessibilitySize ? 24 : 16))
 
                 HTMLText(html: """
                     <h1>HTML tests</h1>
