@@ -62,7 +62,7 @@ private enum DTCoreTextParser {
         <head>
             <style>
                 body {
-                    font-family: \(style.font.name.map { "\($0), " } ?? "")'-apple-system';
+                    font-family: \(style.font.name.map { "\($0), " } ?? "")'-apple-system, sans-serif';
                     font-size: \(style.font.size);
                     line-height: \(style.lineHeight.map { "\($0)pt" } ?? "normal");
                     -webkit-text-size-adjust: none;
