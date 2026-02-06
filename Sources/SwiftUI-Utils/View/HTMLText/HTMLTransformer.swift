@@ -7,6 +7,12 @@ struct HTMLStyleSheet {
     var font: HTMLFont = .system
     var lineSpacing: CGFloat?
     var kerning: CGFloat = 0
+    var linkColor: UIColor = .link
+    
+    var lineHeight: CGFloat? {
+        guard let lineSpacing else { return nil }
+        return font.size + lineSpacing
+    }
 }
 
 @MainActor
@@ -32,7 +38,7 @@ class HTMLTransformer: ObservableObject {
             return
         }
 
-        let cacheKey = "\(string.hashValue)_\(style.font.name ?? "system")_\(style.font.size)_\(style.lineSpacing ?? 0)_\(style.kerning)" as NSString
+        let cacheKey = "\(string.hashValue)_\(style.font.name ?? "system")_\(style.font.size)_\(style.lineSpacing.map(String.init) ?? "normal")_\(style.kerning)_\(style.linkColor)" as NSString
 
         if let cached = activeCache?.object(forKey: cacheKey) {
             html = cached
@@ -58,7 +64,7 @@ private enum DTCoreTextParser {
                 body {
                     font-family: \(style.font.name.map { "\($0), " } ?? "")'-apple-system';
                     font-size: \(style.font.size);
-                    line-height: \(style.lineSpacing.map { "\($0)px" } ?? "normal");
+                    line-height: \(style.lineHeight.map { "\($0)pt" } ?? "normal");
                     -webkit-text-size-adjust: none;
                     margin: 0;
                 }
@@ -76,7 +82,7 @@ private enum DTCoreTextParser {
             DTUseiOS6Attributes: true,
             DTDefaultFontFamily: style.font.name ?? "-apple-system",
             DTDefaultFontSize: style.font.size,
-            DTDefaultLinkColor: UIColor.link,
+            DTDefaultLinkColor: style.linkColor,
             DTDefaultLinkDecoration: false
         ]
 
@@ -90,6 +96,10 @@ private enum DTCoreTextParser {
 
         let mutableString = NSMutableAttributedString(attributedString: attributedString)
         let fullRange = NSRange(location: 0, length: mutableString.length)
+        // DTCoreText sets CTForegroundColorFromContext on link ranges, which tells the renderer to inherit
+        // color from context and suppresses DTDefaultLinkColor. Removing it allows link colors to render.
+        // See: https://github.com/Cocoanetics/DTCoreText/issues/792
+        mutableString.removeAttribute(NSAttributedString.Key("CTForegroundColorFromContext"), range: fullRange)
         mutableString.addAttribute(.kern, value: style.kerning, range: fullRange)
 
         return mutableString.trimmingTrailingCharacters(in: .newlines)

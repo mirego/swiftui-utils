@@ -10,6 +10,8 @@
 		6A2B15172D8B68C50084537A /* HTMLText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B15162D8B68C00084537A /* HTMLText.swift */; };
 		6A2B151B2D8C6B520084537A /* HTMLText+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */; };
 		6A2B151F2D8C70840084537A /* HTMLTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2B151E2D8C70800084537A /* HTMLTextView.swift */; };
+		9755D1362F35527E002908AA /* DTCoreText in Frameworks */ = {isa = PBXBuildFile; productRef = 9755D1352F35527E002908AA /* DTCoreText */; };
+		9755D1382F3668C2002908AA /* MetalMania-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9755D1372F3668C2002908AA /* MetalMania-Regular.ttf */; };
 		B59973262E9FE8B3008362FA /* HTMLTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59973252E9FE8AE008362FA /* HTMLTransformer.swift */; };
 		E1316F472AFE839000232575 /* SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F462AFE839000232575 /* SampleApp.swift */; };
 		E1316F492AFE839000232575 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1316F482AFE839000232575 /* RootView.swift */; };
@@ -47,6 +49,7 @@
 		6A2B15162D8B68C00084537A /* HTMLText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLText.swift; sourceTree = "<group>"; };
 		6A2B151A2D8C6B4A0084537A /* HTMLText+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HTMLText+Environment.swift"; sourceTree = "<group>"; };
 		6A2B151E2D8C70800084537A /* HTMLTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTextView.swift; sourceTree = "<group>"; };
+		9755D1372F3668C2002908AA /* MetalMania-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MetalMania-Regular.ttf"; sourceTree = "<group>"; };
 		B59973252E9FE8AE008362FA /* HTMLTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLTransformer.swift; sourceTree = "<group>"; };
 		E10884272BD062E500C7E222 /* SwiftUI-Utils.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = "SwiftUI-Utils.podspec"; path = "../../SwiftUI-Utils.podspec"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E1316F432AFE839000232575 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +83,7 @@
 		E1A52D3F2B02B04F008A2B9A /* HeaderParallaxScaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderParallaxScaleView.swift; sourceTree = "<group>"; };
 		E1A52D412B02BC16008A2B9A /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		E1A52D432B02BC5B008A2B9A /* UIApplicationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtensions.swift; sourceTree = "<group>"; };
+		EF7C6982657E848C0D21360E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9755D1362F35527E002908AA /* DTCoreText in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +136,7 @@
 		E1316F452AFE839000232575 /* Sample */ = {
 			isa = PBXGroup;
 			children = (
+				EF7C6982657E848C0D21360E /* Info.plist */,
 				E1316F462AFE839000232575 /* SampleApp.swift */,
 				E1316F482AFE839000232575 /* RootView.swift */,
 				E1316F8B2AFEA32100232575 /* Examples */,
@@ -195,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				E1316F4A2AFE839100232575 /* Assets.xcassets */,
+				FD1A284AC3A383478378B04A /* Fonts */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -264,6 +271,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		FD1A284AC3A383478378B04A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				9755D1372F3668C2002908AA /* MetalMania-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -308,6 +323,9 @@
 				Base,
 			);
 			mainGroup = E1316F3A2AFE839000232575;
+			packageReferences = (
+				9755D1342F35527E002908AA /* XCRemoteSwiftPackageReference "DTCoreText" */,
+			);
 			productRefGroup = E1316F442AFE839000232575 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -322,6 +340,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9755D1382F3668C2002908AA /* MetalMania-Regular.ttf in Resources */,
 				E1316F4B2AFE839100232575 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -502,6 +521,7 @@
 				DEVELOPMENT_TEAM = 4Q596JWQC5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SwiftUI Utils";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -533,6 +553,7 @@
 				DEVELOPMENT_TEAM = 4Q596JWQC5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Sample/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "SwiftUI Utils";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -575,6 +596,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9755D1342F35527E002908AA /* XCRemoteSwiftPackageReference "DTCoreText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Cocoanetics/DTCoreText.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.28;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9755D1352F35527E002908AA /* DTCoreText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9755D1342F35527E002908AA /* XCRemoteSwiftPackageReference "DTCoreText" */;
+			productName = DTCoreText;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E1316F3B2AFE839000232575 /* Project object */;
 }
