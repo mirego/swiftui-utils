@@ -18,6 +18,7 @@ public struct HTMLText: View {
     @Environment(\.htmlKerning) var kerning
     @Environment(\.htmlFont) var font
     @Environment(\.htmlLineSpacing) var lineSpacing
+    @Environment(\.htmlLinkColor) var linkColor
     @Environment(\.htmlCacheConfiguration) var cacheConfiguration
 
     @StateObject var transformer = HTMLTransformer()
@@ -34,13 +35,14 @@ public struct HTMLText: View {
             .read(\.width, $width)
             .onAppear {
                 transformer.cacheConfiguration = cacheConfiguration
-                transformer.style = HTMLStyleSheet(font: font, lineSpacing: lineSpacing, kerning: kerning)
+                transformer.style = HTMLStyleSheet(font: font, lineSpacing: lineSpacing, kerning: kerning, linkColor: UIColor(linkColor))
                 transformer.rawHTML = html
             }
             .onChange(of: cacheConfiguration) { transformer.cacheConfiguration = $0 }
             .onChange(of: font) { transformer.style.font = $0 }
             .onChange(of: lineSpacing) { transformer.style.lineSpacing = $0 }
             .onChange(of: kerning) { transformer.style.kerning = $0 }
+            .onChange(of: linkColor) { transformer.style.linkColor = UIColor($0) }
     }
 }
 
