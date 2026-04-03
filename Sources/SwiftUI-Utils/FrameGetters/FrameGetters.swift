@@ -1,93 +1,127 @@
 import SwiftUI
 
-public extension View {
-    func readSize(_ size: Binding<CGSize>) -> some View {
-        background(FrameGetter(coordinateSpace: .local))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                size.wrappedValue = $0.size
-            }
+extension View {
+    public func readSize(_ size: Binding<CGSize>) -> some View {
+        readSize {
+            size.wrappedValue = $0
+        }
     }
 
-    func readLocalFrame(_ frame: Binding<CGRect>) -> some View {
-        background(FrameGetter(coordinateSpace: .local))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                frame.wrappedValue = $0
-            }
+    @ViewBuilder
+    public func readSize(_ reader: @escaping (CGSize) -> Void) -> some View {
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGSize.self, of: \.size, action: reader)
+        } else {
+            background(FrameGetter(coordinateSpace: .local))
+                .onPreferenceChange(FramePreferenceKey.self) {
+                    reader($0.size)
+                }
+        }
     }
 
-    func readLocalFrame(_ reader: @escaping (CGRect) -> Void) -> some View {
-        background(FrameGetter(coordinateSpace: .local))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                reader($0)
-            }
+    public func readLocalFrame(_ frame: Binding<CGRect>) -> some View {
+        readLocalFrame {
+            frame.wrappedValue = $0
+        }
     }
 
-    func readGlobalFrame(_ frame: Binding<CGRect>) -> some View {
-        background(FrameGetter(coordinateSpace: .global))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                frame.wrappedValue = $0
-            }
+    @ViewBuilder
+    public func readLocalFrame(_ reader: @escaping (CGRect) -> Void) -> some View {
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGRect.self, of: { $0.frame(in: .local) }, action: reader)
+        } else {
+            background(FrameGetter(coordinateSpace: .local))
+                .onPreferenceChange(FramePreferenceKey.self) {
+                    reader($0)
+                }
+        }
     }
 
-    func readGlobalFrame(_ reader: @escaping (CGRect) -> Void) -> some View {
-        background(FrameGetter(coordinateSpace: .global))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                reader($0)
-            }
+    public func readGlobalFrame(_ frame: Binding<CGRect>) -> some View {
+        readGlobalFrame {
+            frame.wrappedValue = $0
+        }
     }
 
-    func readNamedFrame(coordinateName: String, _ reader: @escaping (CGRect) -> Void) -> some View {
-        background(FrameGetter(coordinateSpace: .named(coordinateName)))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                reader($0)
-            }
+    @ViewBuilder
+    public func readGlobalFrame(_ reader: @escaping (CGRect) -> Void) -> some View {
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGRect.self, of: { $0.frame(in: .global) }, action: reader)
+        } else {
+            background(FrameGetter(coordinateSpace: .global))
+                .onPreferenceChange(FramePreferenceKey.self) {
+                    reader($0)
+                }
+        }
     }
 
-    func readNamedFrame(coordinateName: String, _ frame: Binding<CGRect>) -> some View {
-        background(FrameGetter(coordinateSpace: .named(coordinateName)))
-            .onPreferenceChange(FramePreferenceKey.self) {
-                frame.wrappedValue = $0
-            }
+    @ViewBuilder
+    public func readNamedFrame(coordinateName: String, _ reader: @escaping (CGRect) -> Void) -> some View {
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGRect.self, of: { $0.frame(in: .named(coordinateName)) }, action: reader)
+        } else {
+            background(FrameGetter(coordinateSpace: .named(coordinateName)))
+                .onPreferenceChange(FramePreferenceKey.self) {
+                    reader($0)
+                }
+        }
     }
-    
-    func read(
+
+    public func readNamedFrame(coordinateName: String, _ frame: Binding<CGRect>) -> some View {
+        readNamedFrame(coordinateName: coordinateName) {
+            frame.wrappedValue = $0
+        }
+    }
+
+    @ViewBuilder
+    public func read(
         _ keyPath: KeyPath<CGRect, CGFloat>,
         in coordinateSpace: CoordinateSpace = .local,
         _ reader: @escaping (CGFloat) -> Void
     ) -> some View {
-        background(SingleDimensionGetter(coordinateSpace: coordinateSpace, keyPath: keyPath))
-            .onPreferenceChange(SingleDimensionPreferenceKey.self) {
-                reader($0)
-            }
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGFloat.self, of: { $0.frame(in: coordinateSpace)[keyPath: keyPath] }, action: reader)
+        } else {
+            background(SingleDimensionGetter(coordinateSpace: coordinateSpace, keyPath: keyPath))
+                .onPreferenceChange(SingleDimensionPreferenceKey.self) {
+                    reader($0)
+                }
+        }
     }
-    
-    func read(
+
+    public func read(
         _ keyPath: KeyPath<CGRect, CGFloat>,
         in coordinateSpace: CoordinateSpace = .local,
         _ dimension: Binding<CGFloat>
     ) -> some View {
-        background(SingleDimensionGetter(coordinateSpace: coordinateSpace, keyPath: keyPath))
-            .onPreferenceChange(SingleDimensionPreferenceKey.self) {
-                dimension.wrappedValue = $0
-            }
+        read(keyPath, in: coordinateSpace) {
+            dimension.wrappedValue = $0
+        }
     }
-    
-    func read(
+
+    @ViewBuilder
+    public func read(
         _ keyPath: KeyPath<CGRect, CGFloat>,
         in coordinateSpace: CoordinateSpace = .local,
         _ dimension: Binding<CGFloat?>
     ) -> some View {
-        background(SingleDimensionGetter(coordinateSpace: coordinateSpace, keyPath: keyPath))
-            .onPreferenceChange(SingleDimensionPreferenceKey.self) {
+        if #available(iOS 16.0, *) {
+            onGeometryChange(for: CGFloat.self, of: { $0.frame(in: coordinateSpace)[keyPath: keyPath] }) {
                 dimension.wrappedValue = $0
             }
+        } else {
+            background(SingleDimensionGetter(coordinateSpace: coordinateSpace, keyPath: keyPath))
+                .onPreferenceChange(SingleDimensionPreferenceKey.self) {
+                    dimension.wrappedValue = $0
+                }
+        }
     }
 }
 
 private struct FramePreferenceKey: PreferenceKey {
     static var defaultValue: CGRect = .zero
 
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) { }
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {}
 
     typealias Value = CGRect
 }
@@ -108,7 +142,7 @@ private struct FrameGetter: View {
 private struct SingleDimensionPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = .zero
 
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { }
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
 }
 
 private struct SingleDimensionGetter: View {
