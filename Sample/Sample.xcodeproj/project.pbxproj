@@ -600,10 +600,10 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		9755D1342F35527E002908AA /* XCRemoteSwiftPackageReference "DTCoreText" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Cocoanetics/DTCoreText.git";
+			repositoryURL = "https://github.com/mirego/DTCoreText.git";
 			requirement = {
-				kind = revision;
-				revision = d5a07c3de59df086c8d609d47807d7b16da1fe88;
+				kind = exactVersion;
+				version = 1.6.29;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
